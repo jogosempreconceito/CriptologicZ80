@@ -7,21 +7,30 @@ org &8000
 	ld hl, Frase
 ProximoChar:
 	ld a,(hl)
-	call PrintChar 
 	cp 13 
 	jp z, FimString
+	call PrintChar 
 	inc hl
 	jp ProximoChar
 FimString:
-	call NovaLinha 
+	;call NovaLinha 
 ret 
 
+;==============================================================================================
+; Pular uma linha 
+;==============================================================================================
+; Parametros => NA
+;==============================================================================================
+; Altera => NA 
+;==============================================================================================
 NovaLinha:
-	ld a,13
-	call PrintChar 
-	ld a,10
-	call Printchar
+	push af
+		ld a,13
+		call PrintChar 
+		ld a,10
+		call Printchar
+	pop af 
 ret  
 
 Frase:  
-	db "Ola Mundo",13 ; 13 em ascii signifca ENTER
+	db "Ola Mundo",13; 13 em ascii signifca ENTER
