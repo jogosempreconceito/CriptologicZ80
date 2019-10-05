@@ -6,26 +6,14 @@
 ; Guardar o tamanho da frase digitada => (TamanhoFrase)
 ; Imprimir a mensagem vindo da memoria para teste => (ImprimirMensagem)
 ; ========================================================================================
-read "Bios.asm"			; contem as funcoes do amstrad CPC 
-read "Variaveis.asm" 		; read = include 
-
-; ========================================================================================
-; INICIO PROGRAMA
-; ========================================================================================
-org &8000
-	call LimpaMem
-	call PegarFrase 
-	call ImprimirFrase 	
-ret 
-cls
 PegarFrase:
 	call SCR_MODE_CLEAR
 	call Home 
 	ld hl,MsgUsuario1
 	call PrintString 
-	ld hl,Frase
+	ld hl,StrFrase
 	call LimpaString
-	ld hl,Frase
+	ld hl,StrFrase
 	ld b,0 				; inicia o contador de letras 
 LoopFrase:
 	call KM_WAIT_CHAR		; manda a letra digitada para o A
@@ -36,12 +24,12 @@ LoopFrase:
 	cp 13 				; 13 = enter 
 	jp z,ValidaDuasLetras 		
 	ld a,b
-	ld (TamanhoFrase),a 
+	ld (NumTamFrase),a 
 	cp 14 
 	ret z 
 	jp LoopFrase 
 ValidaDuasLetras:
-	ld a,(TamanhoFrase)
+	ld a,(NumTamFrase)
 	cp 2 
 	ret nc 				; Se a >= 2 esta ok, retorna 
 	call LimpaString
@@ -52,13 +40,6 @@ ImprimirFrase:
 	call Novalinha 
 	ld hl,MsgUsuario2
 	call PrintString 
-	ld hl,Frase 
+	ld hl,StrFrase 
 	call PrintString 	
 ret
-
-; ========================================================================================
-; FIM PROGRAMA
-; ========================================================================================	
-read "Biblioteca.asm"
-read "Strings.asm"
-

@@ -5,7 +5,12 @@ MsgUsuario1:
 	db "Entre a sua mensagem:",13 
 MsgUsuario2: 
 	db "Voce Digitou:",13 
-Frase: 
+MsgUsuario3: 
+	db "Frase Embaralhada:",13 
+
+StrFrase: 
+	db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,13 
+StrFraseEmb:
 	db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,13 
 MatSorteados:
 	db 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255

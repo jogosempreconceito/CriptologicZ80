@@ -11,19 +11,24 @@
 ; =========================================================================================
 LimpaMem: 
 	; ================== Zerar Numericos ====================
-	ld a,0 
+	xor a 
 	ld (NumTamFrase),a
 	ld (NumAleatorio),a
 	ld (NumSorteios),a
 	ld (NumDivIdeal),a
-
+	ld (NumContEmb),a
+	ld (NumPosSort),a
+	; ================== Zerar Caracteres ====================
+	ld a,' '
+	ld (ChaLetraAtual),a
 	; ================== Zerar String ====================
-	ld hl,Frase
+	ld hl,StrFrase
+	call LimpaString
+	ld hl,StrFraseEmb
 	call LimpaString
 	; ================== Zerar Matrizes ====================
 	ld hl,MatSorteados
 	call ZerarMatriz 
-
 ret 
 
 ; ========================================================================================

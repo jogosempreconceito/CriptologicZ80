@@ -12,18 +12,7 @@
 ; Imprimir o char convertido 				=> ImprimeChar
 ; Somar um a cada elemento da matriz			=> Somar um
 ;=========================================================================================
-read "Bios.asm"			; contem as funcoes do amstrad CPC 
-read "Variaveis.asm" 		; read = include 
-
-; ========================================================================================
-; INICIO PROGRAMA
-; ========================================================================================
-org &8000
-	call LimpaMem			; Limpar a memoria 
-	xor a				; ld a,0 so que mais rapido
-	ld (NumSorteios),a		; zera contador de sorteios
-	ld a,2  			; Tamanho da frase do jogador 1
-	ld (NumTamFrase),a		; testar com 2, 9 e 14
+Sortear:
 	call AcharDivIdeal		; achar o divisor ideal 
 SortearDeNovo:
 	call SortearNumero		; Sorteei o numero em NumAleatorio
@@ -132,6 +121,7 @@ FimSomarUm:
 ret
 
 ImprimirMatriz:
+	call NovaLinha 
 	ld hl,MatSorteados
 LoopImprimirMatriz:
 	ld a,(hl)
@@ -145,9 +135,3 @@ LoopImprimirMatriz:
 	jp LoopImprimirMatriz
 FimImprimirMatriz:
 ret
-
-; ========================================================================================
-; FIM PROGRAMA
-; ========================================================================================	
-read "Biblioteca.asm"
-read "Strings.asm"
