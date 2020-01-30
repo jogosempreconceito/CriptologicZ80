@@ -18,6 +18,8 @@ LimpaMem:
 	ld (NumDivIdeal),a
 	ld (NumContEmb),a
 	ld (NumPosSort),a
+	ld (NumContTeste),a
+	ld (NumContErros),a
 	; ================== Zerar Caracteres ====================
 	ld a,' '
 	ld (ChaLetraAtual),a

@@ -3,7 +3,7 @@
 ; ========================================================================================
 ; Manoel Neto 2019-05-10
 ; ========================================================================================
-read "Bios.asm"			; contem as funcoes do amstrad CPC 
+read "BiosCPC.asm"		; contem as funcoes do amstrad CPC 
 read "Variaveis.asm" 		; read = include 
 
 ; ========================================================================================
@@ -15,11 +15,13 @@ org &8000
 	call PegarFrase
 	call Sortear
 	call Embaralhar	
+	call PegarChutes
 ret 
 
 read "PegarFrase.asm"
 read "Sortear.asm"
 read "Embaralhar.asm"
+read "PegarChutes.asm"
 ; ========================================================================================
 ; FIM PROGRAMA
 ; ========================================================================================	
