@@ -15,11 +15,13 @@ org &8000
 	call PegarFrase
 	call Sortear
 	call Embaralhar	
+	call PegarChutes
 ret 
 
 read "PegarFrase.asm"
 read "Sortear.asm"
 read "Embaralhar.asm"
+read "PegarChutes.asm"
 ; ========================================================================================
 ; FIM PROGRAMA
 ; ========================================================================================	
