@@ -12,10 +12,15 @@ Chamadas da BIOS do Amstrad CPC: http://www.cpcwiki.eu/index.php/BIOS_Function_S
 
 O MSX não tem uma IDE integrada que me agrade, entao usaremos aplicativos nao integrados
 
-Editor VS Code: 
+Editor VS Code:
+
+https://code.visualstudio.com/download
+
 Compilador PASMO:
-Emulador OpenMSX:
-OpenMSX Debbuger:
+https://pasmo.speccy.org/
+
+Emulador OpenMSX e OpenMSX Debbuger:
+https://openmsx.org/
 
 Chamadas da BIOS do MSX: http://map.grauw.nl/resources/msxbios.php
 
