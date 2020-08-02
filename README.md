@@ -27,6 +27,9 @@ Chamadas da BIOS do MSX: http://map.grauw.nl/resources/msxbios.php
 Ferramenta para a criação de DSK de MSX: 
 http://www.lexlechz.at/en/software.html
 
+Emulador WebMSX:
+https://webmsx.org/
+
 # Documentacao do processador Z80 (Usada em ambas as maquinas)
 
 Comandos do Z80: http://z80-heaven.wikidot.com/
