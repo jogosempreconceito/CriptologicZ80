@@ -1,7 +1,7 @@
 ; ========================================================================================
 ; Pegar uma letra e testar se e a letra da posicao verificada
 ; ========================================================================================
-; pegar o chute 				=> PegarEntrada
+; pegar o chute 							=> PegarEntrada
 ; testar se essa letra e a posicao atual	=> TestarCorreto
 ; imprimir se esta certo ou errado.   		=> ImprimeErros
 ; ========================================================================================
@@ -13,7 +13,7 @@ loopPegarChar:
 	call PegarEntrada
 	jp TestarCorreto
 EstaCorreto: 
-	ld hl,MsgUsuario4
+	ld hl,MsgUsuario5
 	call PrintString
 	call NovaLinha
 	ld a,(NumTamFrase)
@@ -30,7 +30,7 @@ Acertou:
 ret 
 
 PegarEntrada:
-	ld hl,MsgUsuario5
+	ld hl,MsgUsuario4
 	call PrintString
 	call CHGET	
 	ld (ChaTestar),a
@@ -70,6 +70,3 @@ ImprimeErros:
 	call PrintNumber
 	call NovaLinha
 ret 
-
-
-

@@ -22,10 +22,10 @@ ValidadoMenorN:
 ValidadoJaFoi:
 	call GravarNaMatriz		; Grava o sorteio na matriz
 	ld a,(NumTamFrase)		; carrega o contador de sorteios
-	ld c,a				; so irei sortear de acordo com a entrada
+	ld c,a					; so irei sortear de acordo com a entrada
 	ld a,(NumSorteios)		; Pega o numero de sorteios
-	inc a				; Aumenta numero de sorteios
-	cp c				; testa se eh ultimo sorteio
+	inc a					; Aumenta numero de sorteios
+	cp c					; testa se eh ultimo sorteio
 	jp z,FimSorteio			; Acabou
 	ld (NumSorteios),a		; Grava o numero de sorteios
 	jp SortearDeNovo		; faz de novo
@@ -33,7 +33,6 @@ FimSorteio:
 	call SomarUm			; soma um em cada elemento da matriz
 	call ImprimirMatriz		; Imprimir a Matriz
 ret
-
 
 AcharDivIdeal:
 	ld a,(NumTamFrase)
@@ -105,6 +104,8 @@ AcharPosMat:
 AcheiPosMat:
 	ld a,(NumAleatorio)
 	ld (hl),a
+	inc hl
+	ld (hl),255
 ret	
 
 SomarUm:

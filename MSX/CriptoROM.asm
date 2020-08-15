@@ -1,30 +1,38 @@
 ; ========================================================================================
-; Criptologic 0.1 para MSX 
+; Criptologic 0.1 para MSX Versao Cartucho
 ; ========================================================================================
-; Manoel Neto 2019-05-10
+; Manoel Neto 2020-08-14
 ; ========================================================================================
-read "BiosCPC.asm"			; contem as funcoes do amstrad CPC 
-read "Variaveis.asm" 		; read = include 
+include "hardware\BiosMSX.asm"			; contem as funcoes de bios MSX 
+include "assets\Constantes.asm"	
+include "assets\Variaveis.asm" 	
+ 
 
 ; ========================================================================================
 ; INICIO PROGRAMA
 ; ========================================================================================
-org &8000
+org romArea
+	db "AB"
+  	dw ProgramStart
+  	db 00,00,00,00,00
+ProgramStart:
 	call LimpaMem
-	call SCR_MODE_CLEAR
+	call LimparTela
 	call PegarFrase
 	call Sortear
 	call Embaralhar	
 	call PegarChutes
 ret 
 
-read "PegarFrase.asm"
-read "Sortear.asm"
-read "Embaralhar.asm"
-read "PegarChutes.asm"
+include "PegarFrase.asm"
+include "Sortear.asm"
+include "Embaralhar.asm"
+include "PegarChutes.asm"
 ; ========================================================================================
 ; FIM PROGRAMA
 ; ========================================================================================	
-read "Biblioteca.asm"
-read "Strings.asm"
+include "library\Biblioteca.asm"
+include "assets\Strings.asm"
 
+romPad:
+ ds romSize-(romPad-romArea),0
