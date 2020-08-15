@@ -4,9 +4,8 @@
 ; Manoel Neto 2020-08-14
 ; ========================================================================================
 include "hardware\BiosMSX.asm"			; contem as funcoes de bios MSX 
-include "assets\Constantes.asm"	
-include "assets\Variaveis.asm" 	
- 
+include "assets\Constantes.asm"			; valores que nao mudarao durante o programa
+include "assets\Variaveis.asm" 			; valores que serao colocados na RAM MSX (&E000) 
 
 ; ========================================================================================
 ; INICIO PROGRAMA
