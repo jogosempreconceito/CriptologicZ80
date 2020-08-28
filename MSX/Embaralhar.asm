@@ -1,21 +1,21 @@
 ;=========================================================================================
 ; Embaralhar Frase
 ;=========================================================================================
-; Achar a posicao sorteada na matriz			=> AcharPosSort
-; Achar a letra nessa posicao da matriz			=> AcharLetra
+; Achar a posicao sorteada na matriz					=> AcharPosSort
+; Achar a letra nessa posicao da matriz					=> AcharLetra
 ; Gravar a letra encontrada em sua posicao embaralhada	=> GravarLetra
-; Imprimir a frase inicial 				=> StrFrase
-; Imprimir a frase Embaralhada 				=> StrFraseEmb
+; Imprimir a frase inicial 								=> StrFrase
+; Imprimir a frase Embaralhada 							=> StrFraseEmb
 ;=========================================================================================
 Embaralhar:
-	xor a				; xor a = ld a,0
+	xor a					; xor a = ld a,0
 	ld (NumContEmb),a		; zerar o contador de embaralhamento			
 GravarProxima:
 	call AcharPosSort 		; achar a posicao sorteada nesse momento 
 	call AcharLetra 		; achar a a letra dessa posicao 
 	call GravarLetra 		; achar a a letra dessa posicao 
 	ld a,(NumTamFrase)
-	ld b,a 				; par BC controla os loops
+	ld b,a 					; par BC controla os loops
 	ld a,(NumContEmb)
 	cp b
 	jp z,GravouTudo
@@ -77,21 +77,3 @@ AchouPosGravar:
 	inc hl 
 	ld (hl),13 
 ret 
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

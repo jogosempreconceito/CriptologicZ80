@@ -1,7 +1,7 @@
 ; ========================================================================================
 ; Pegar uma letra e testar se e a letra da posicao verificada
 ; ========================================================================================
-; pegar o chute 				=> PegarEntrada
+; pegar o chute 							=> PegarEntrada
 ; testar se essa letra e a posicao atual	=> TestarCorreto
 ; imprimir se esta certo ou errado.   		=> ImprimeErros
 ; ========================================================================================
@@ -70,6 +70,3 @@ ImprimeErros:
 	call PrintNumber
 	call NovaLinha
 ret 
-
-
-
