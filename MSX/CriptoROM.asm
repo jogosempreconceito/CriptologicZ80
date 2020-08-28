@@ -3,28 +3,44 @@
 ; ========================================================================================
 ; Manoel Neto 2019-05-10
 ; ========================================================================================
-read "BiosCPC.asm"			; contem as funcoes do amstrad CPC 
-read "Variaveis.asm" 		; read = include 
-
+include "hardware\BiosMSX.asm"			; contem as funcoes de bios do MSX 
+include "assets\Variaveis.asm" 		
+include "assets\Constantes.asm" 	
 ; ========================================================================================
 ; INICIO PROGRAMA
 ; ========================================================================================
-org &8000
+org romArea
+	db "AB"                     ; identifica como ROM
+ 	dw startCode                ; endereço de execução
+ 	db "CL01"                   ; string de identificação
+ 	ds 6,0						; define seis bytes com zeros 
+
+startCode: 
 	call LimpaMem
-	call SCR_MODE_CLEAR
+	call LimparTela
 	call PegarFrase
 	call Sortear
 	call Embaralhar	
 	call PegarChutes
-ret 
+	ld hl, MsgUsuario9
+	call PrintString
+	call CHGET
+	cp 13
+	jp z,startCode
+ret
 
-read "PegarFrase.asm"
-read "Sortear.asm"
-read "Embaralhar.asm"
-read "PegarChutes.asm"
+include "PegarFrase.asm"
+include "Sortear.asm"
+include "Embaralhar.asm"
+include "PegarChutes.asm"
 ; ========================================================================================
 ; FIM PROGRAMA
 ; ========================================================================================	
-read "Biblioteca.asm"
-read "Strings.asm"
+include "library\Biblioteca.asm"
+include "assets\Strings.asm"
 
+; =============================================================================
+; Padding
+; =============================================================================
+romPad:
+ ds romSize-(romPad-romArea),0

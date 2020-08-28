@@ -13,7 +13,7 @@ loopPegarChar:
 	call PegarEntrada
 	jp TestarCorreto
 EstaCorreto: 
-	ld hl,MsgUsuario4
+	ld hl,MsgUsuario5
 	call PrintString
 	call NovaLinha
 	ld a,(NumTamFrase)
@@ -30,7 +30,7 @@ Acertou:
 ret 
 
 PegarEntrada:
-	ld hl,MsgUsuario5
+	ld hl,MsgUsuario4
 	call PrintString
 	call CHGET	
 	ld (ChaTestar),a

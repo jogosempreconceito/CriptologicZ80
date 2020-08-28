@@ -17,9 +17,5 @@ MsgUsuario7:
 	db "Parabens! Acertou tudo!",13
 MsgUsuario8:
 	db "Erros:",13
-StrFrase: 
-	db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,13 
-StrFraseEmb:
-	db 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,13 
-MatSorteados:
-	db 255,255,255,255,255,255,255,255,255,255,255,255,255,255,255
+MsgUsuario9:
+	db "Tecle <enter> para jogar novamente.",13

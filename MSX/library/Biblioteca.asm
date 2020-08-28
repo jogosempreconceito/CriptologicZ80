@@ -56,12 +56,13 @@ LimpaMem:
 	ld (ChaTestar),a
 	; ================== Zerar String ====================
 	ld hl,StrFrase
-	call LimpaString
+	ld a,16
+	call CleanString
 	ld hl,StrFraseEmb
-	call LimpaString
+	call CleanString
 	; ================== Zerar Matrizes ====================
 	ld hl,MatSorteados
-	call ZerarMatriz 
+	call CleanMat 
 ret 
 
 ; ========================================================================================
@@ -296,11 +297,42 @@ ImprimeUnidades:
 	add a,&30		
 	call CHPUT
 ret
-
-Centenas:
-	defb &00
-Dezenas:
-	defb &00
-Unidades:
-	defb &00
 ; ========================================================================================
+
+; =============================================================================
+; Limpar um espaco de memoria com CHR(13)
+; =============================================================================
+; HL => Inicio da memoria
+; A	 => bytes a limpar
+; =============================================================================
+; Altera => A, Todos os bytes a partir de HL ate HL+D
+; =============================================================================
+CleanString:
+	ld a,d
+CleanByteAgain:
+	ld (hl),13
+	cp 0
+	jr z,CleanedBytes
+	dec a
+	jp CleanByteAgain
+CleanedBytes:
+ret
+
+; =============================================================================
+; Limpar um espaco de memoria com CHR(255)
+; =============================================================================
+; HL => Inicio da memoria
+; A	 => bytes a limpar
+; =============================================================================
+; Altera => A, Todos os bytes a partir de HL ate HL+A
+; =============================================================================
+CleanMat:
+	ld a,d
+CleanMatAgain:
+	ld (hl),255
+	cp 0
+	jr z,CleanedMat
+	dec a
+	jp CleanMatAgain
+CleanedMat:
+ret
