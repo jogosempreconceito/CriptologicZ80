@@ -48,6 +48,8 @@
 ;       PORTA B PORTA A C       B       A       C   B   A
 ;
 ; IMPORTANTE! => CARREGUE SEMPRE OS BITS 7 E 6 COM 1 E 0 OU VOCE PODE DANIFICAR O PSG DO SEU MSX!
+; IMPORTANTE! => NESSE REGISTRADOR VC LIGA OS CANAIS COM 0 E DESLIGA COM 1. 
+
 ; ================================================================================================
 ; Como esses registradores estao no chip de audio AY3-8910 o Z80 se comunica com ele usando 
 ; instruções OUT com 3 portas de E/S definidas 
@@ -63,13 +65,13 @@ db 00,00,00,00,00
 
 ProgramStart:
     ld a, 0                     ; carrega conjunto R0 / R1 COM 254
-    ld c, %00011111             ; carrega conjunto R0 / R1 COM 254
+    ld c, %00010100             ; carrega conjunto R0 / R1 COM 254
     call SetRegister            ; CARREGA REGISTRADOR R0
     ld a, 1                     ; carrega conjunto R0 / R1 COM 254
-    ld c, %00000000             ; carrega conjunto R0 / R1 COM 254
+    ld c,%00000000              ; carrega conjunto R0 / R1 COM 254
     call SetRegister            ; CARREGA REGISTRADOR R1
     ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
-    ld c,15                     ; CARREGA MIXER LIGANDO CANAL A
+    ld c,3                      ; CARREGA MIXER LIGANDO CANAL A
     call SetRegister            ; CARREGA REGISTRADOR R8
     ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
     ld c, %10111110             ; CARREGA MIXER LIGANDO CANAL A
@@ -82,7 +84,7 @@ ret
 ; Setar um registrador
 ; ================================================================================================
 ; A => Registrador no AY38910 que sera atualizado
-; C => Dados a serem enviados ao registrador
+; C => Dados a serem enviados ao registrador do AY38910
 ; ================================================================================================
 ; Altera => Nada
 ; ================================================================================================
