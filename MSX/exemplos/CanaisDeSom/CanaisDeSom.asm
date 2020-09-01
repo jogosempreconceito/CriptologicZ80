@@ -69,7 +69,7 @@ ProgramStart:
     ld c, %00000000             ; carrega conjunto R0 / R1 COM 254
     call SetRegister            ; CARREGA REGISTRADOR R1
     ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
-    ld c, 15                    ; CARREGA MIXER LIGANDO CANAL A
+    ld c,15                     ; CARREGA MIXER LIGANDO CANAL A
     call SetRegister            ; CARREGA REGISTRADOR R8
     ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
     ld c, %10111110             ; CARREGA MIXER LIGANDO CANAL A
