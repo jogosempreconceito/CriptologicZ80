@@ -59,43 +59,65 @@ PORTA_ESCRITA:  EQU &A1
 PORTA_LEITURA:  EQU &A2
 ; ================================================================================================
 org &4000
-db "AB"
-dw ProgramStart
-db 00,00,00,00,00
+  db "AB"
+  dw ProgramStart
+  db 00,00,00,00,00
 
+include "BiosMSX.asm"
+include "TabelaNotasFrequencias.asm"
 ProgramStart:
-    ld a, 0                     ; carrega conjunto R0 / R1 COM 254
-    ld c, %00010100             ; carrega conjunto R0 / R1 COM 254
-    call SetRegister            ; CARREGA REGISTRADOR R0
-    ld a, 1                     ; carrega conjunto R0 / R1 COM 254
-    ld c,%00000000              ; carrega conjunto R0 / R1 COM 254
-    call SetRegister            ; CARREGA REGISTRADOR R1
-    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
-    ld c,3                      ; CARREGA MIXER LIGANDO CANAL A
-    call SetRegister            ; CARREGA REGISTRADOR R8
-    ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
-    ld c, %10111110             ; CARREGA MIXER LIGANDO CANAL A
-    call SetRegister            ; CARREGA REGISTRADOR R7
-loop:
-    jp loop 
+  ld b,A1
+  call PlayNote
+  ld b,B2
+  call PlayNote
+  ld b,C3
+  call PlayNote
+  ld b,D4
+  call PlayNote
+  ld b,E5
+  call PlayNote     
 ret
 
 ; ================================================================================================
 ; Setar um registrador
 ; ================================================================================================
 ; A => Registrador no AY38910 que sera atualizado
-; C => Dados a serem enviados ao registrador do AY38910
+; E => Dados a serem enviados ao registrador do AY38910
 ; ================================================================================================
 ; Altera => Nada
 ; ================================================================================================
 SetRegister:
-  push bc
-    out (PORTA_ENDERECO),a        ; carregar a porta de selecao de registrador
-  pop bc
-  ld a,c
-  out (PORTA_ESCRITA),a           ; manda o novo valor para o porta de dados
+  call WRTPSG  
 ret
 ; ===============================================================================================
+
+; ================================================================================================
+; Play Note
+; ================================================================================================
+; A => Nota a ser tocada
+; ================================================================================================
+; Altera => Nada
+; ================================================================================================
+PlayNote:
+  push af
+  push bc
+    ld a, 0                     ; CARREGA BITS MENOS SIGNIFICATIVOS DA FREQUENCIA
+    ld e, b                     ; CARREGA VALOR
+    call SetRegister            ; CARREGA REGISTRADOR R0
+    ld a, 1                     ; CARREGA BITS MAIS SIGNIFICATIVOS DA FREQUENCIA 
+    ld e,%00000000              ; CARREGA FREQUENCIA 
+    call SetRegister            ; CARREGA REGISTRADOR R1
+    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
+    ld e,3                      ; CARREGA VALOR 
+    call SetRegister            ; CARREGA REGISTRADOR R8
+    ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
+    ld e, %10111110             ; CARREGA VALOR
+    call SetRegister            ; CARREGA REGISTRADOR R7
+  pop bc
+  pop af 
+ret
+; ===============================================================================================
+
 
 ; ================================================================================================
 ; PADDING 
