@@ -66,15 +66,15 @@ org &4000
 include "BiosMSX.asm"
 include "TabelaNotasFrequencias.asm"
 ProgramStart:
-  ld b,A1
-  call PlayNote
-  ld b,B2
-  call PlayNote
   ld b,C3
   call PlayNote
-  ld b,D4
+  ld b,D3
   call PlayNote
-  ld b,E5
+  ld b,E3
+  call PlayNote
+  ld b,F3
+  call PlayNote
+  ld b,G3
   call PlayNote     
 ret
 
@@ -117,7 +117,6 @@ PlayNote:
   pop af 
 ret
 ; ===============================================================================================
-
 
 ; ================================================================================================
 ; PADDING 
