@@ -66,6 +66,8 @@ org &4000
 include "BiosMSX.asm"
 include "TabelaNotasFrequencias.asm"
 ProgramStart:
+  xor a
+  call CLS  
   ld b,C3
   call PlayNote
   ld b,D3
@@ -107,7 +109,7 @@ PlayNote:
     ld a, 1                     ; CARREGA BITS MAIS SIGNIFICATIVOS DA FREQUENCIA 
     ld e,%00000000              ; CARREGA FREQUENCIA 
     call SetRegister            ; CARREGA REGISTRADOR R1
-    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
+    ld a,15                     ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
     ld e,3                      ; CARREGA VALOR 
     call SetRegister            ; CARREGA REGISTRADOR R8
     ld a,7                      ; CARREGA MIXER LIGANDO CANAL A

@@ -3,7 +3,6 @@
 ; ========================================================================================
 ; Manoel Neto 2019-05-10
 ; ========================================================================================
-include "hardware\BiosMSX.asm"			; contem as funcoes de bios do MSX 
 include "assets\Variaveis.asm" 		
 include "assets\Constantes.asm" 	
 ; ========================================================================================
@@ -21,6 +20,8 @@ startCode:
 	call PegarFrase
 	call Sortear
 	call Embaralhar	
+	call SomEmbaralhar
+	call PlaySound
 	call PegarChutes
 	ld hl, MsgUsuario9
 	call PrintString
@@ -33,9 +34,12 @@ include "PegarFrase.asm"
 include "Sortear.asm"
 include "Embaralhar.asm"
 include "PegarChutes.asm"
+
 ; ========================================================================================
 ; FIM PROGRAMA
 ; ========================================================================================	
+include "hardware\BiosMSX.asm"			; contem as funcoes de bios do MSX
+include "hardware\AY38910.ASM"			; contem as funcoes de audio
 include "library\Biblioteca.asm"
 include "assets\Strings.asm"
 

@@ -29,6 +29,7 @@ GravouTudo:
 	ld hl,StrFraseEmb		; imprime a frase embaralhada
 	call PrintString		; print
 	call NovaLinha	
+	call PlaySound
 ret 
 	
 AcharPosSort: 

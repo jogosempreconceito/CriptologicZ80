@@ -1,5 +1,4 @@
 Frequencias das notas musicais.
-
 https://newt.phys.unsw.edu.au/jw/notes.html
 
 Curso de Basic MSX
