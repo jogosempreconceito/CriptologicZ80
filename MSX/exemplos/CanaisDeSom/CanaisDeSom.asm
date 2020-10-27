@@ -69,15 +69,19 @@ include "TabelaNotasFrequencias.asm"
 ProgramStart:
   xor a
   call CLS  
-  ld b,C3
+  ld bc,C1
   call PlayNote
-  ld b,D3
+  ld bc,D2
   call PlayNote
-  ld b,E3
+  ld bc,E3
   call PlayNote
-  ld b,F3
+  ld bc,F4
   call PlayNote
-  ld b,G3
+  ld bc,G5
+  call PlayNote 
+  ld bc,A6
+  call PlayNote 
+  ld bc,B7
   call PlayNote     
 ret
 
@@ -97,48 +101,49 @@ ret
 ; ================================================================================================
 ; Play Note
 ; ================================================================================================
-; B => Nota a ser tocada
+; B => Nota a ser tocada (LSB)
+; C => Nota a ser tocada (MSB)
 ; ================================================================================================
 ; Altera => Nada
 ; ================================================================================================
 PlayNote:
-    ; ===================
-    ; PERIODO LSB
-    ; ===================
-    ld a, 0                     ; CARREGA BITS MENOS SIGNIFICATIVOS DA FREQUENCIA
-    ld e, b                     ; CARREGA VALOR
+    ; ========================
+    ; FREQUENCIA LSB
+    ; ========================
+    ld a,0                      ; CARREGA BITS MENOS SIGNIFICATIVOS DA FREQUENCIA
+    ld e,b                      ; CARREGA VALOR
     call SetRegister            ; CARREGA REGISTRADOR R0
-    ; ===================
-    ; PERIODO MSB 
-    ; ===================
-    ld a, 1                     ; CARREGA BITS MAIS SIGNIFICATIVOS DA FREQUENCIA 
-    ld e,%00000000              ; CARREGA FREQUENCIA 
+    ; ========================
+    ; FREQUENCIA MSB 
+    ; ========================
+    ld a,1                      ; CARREGA BITS MAIS SIGNIFICATIVOS DA FREQUENCIA 
+    ld e,c                      ; CARREGA FREQUENCIA 
     call SetRegister            ; CARREGA REGISTRADOR R1
-    ; ===================
+    ; ========================
     ; AMPLITUDE
-    ; ===================
-    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
+    ; ========================
+    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE ALTA
     ld e,%00001111              ; CARREGA VALOR 
     call SetRegister            ; CARREGA REGISTRADOR R8
-    ; ===================
+    ; ========================
     ; MIXER
-    ; ===================    
+    ; ========================    
     ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
     ld e, %10111110             ; CARREGA VALOR
     call SetRegister            ; CARREGA REGISTRADOR R7
-    ; ===================
-    ; TOCA A NOTA POR 1S
-    ; ===================    
-    ld de,65535                 ; carrego um valor de 16 bits 
+    ; ========================
+    ; TOCA A NOTA PELO PERIODO
+    ; ========================    
+    ld de,12000                  ; carrego um valor de 16 bits 
     loopNote:         
       nop                       ; nao faco nada
       dec de                    ; decremento o loop 
       ld a,d                    ; ajusto os bits para a comparacao 
       or e                      ; ajusto os bits para a comparacao 
       jp nz,loopNote            ; se nao for zero, volto ao loop 
-    ; ===================
+    ; ========================
     ; SILENCIO
-    ; ===================    
+    ; ========================    
     ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
     ld e, %10111111             ; CARREGA VALOR
     call SetRegister            ; CARREGA REGISTRADOR R7    
