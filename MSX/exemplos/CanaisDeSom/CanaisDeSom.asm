@@ -55,7 +55,7 @@
 ; Como esses registradores estao no chip de audio AY3-8910 o Z80 se comunica com ele usando 
 ; instruções OUT com 3 portas de E/S definidas 
 ; ================================================================================================
-PORTA_ENDERECO: EQU &A0
+PORTA_ENDERECO: EQU &A0               ; apenas para referencia
 PORTA_ESCRITA:  EQU &A1
 PORTA_LEITURA:  EQU &A2
 ; ================================================================================================
