@@ -17,3 +17,5 @@ MatSorteados        equ ramArea+42  ; Variavel => Recebe a Matriz de numeros sor
 Centenas            equ ramArea+43  ; Variavel => Usada para imprimir numeros
 Dezenas             equ ramArea+45  ; Variavel => Usada para imprimir numeros
 Unidades            equ ramArea+47  ; Variavel => Usada para imprimir numeros 
+vdpCycle1:          equ ramArea+48 ; Calculo de um ciclo de VPD
+vdpCycle5:          equ ramArea+49 ; Calculo de cinco ciclos de VPD

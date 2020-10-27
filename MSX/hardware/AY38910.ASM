@@ -9,23 +9,52 @@
 ; Mixer	            => Liga e desliga os canais de som
 ; Noise	            => Sons com distorcao
 ; Tone	            => Tom emitido
+; O PSG possui 3 canais de som (A,B e C) que tem seus periodos controlados pelos seguintes 
+; registradores:
+; 
+; Canal A   => Registradores 0 e 1
+; Canal B   => Registradores 2 e 3
+; Canal C   => Registradores 4 e 5
+; 
+; O modelo desses registradores segue abaixo  
+;
+; R0 => 7   6   5   4   3   2   1   0  
+;       BITS MENOS SIGNIFICATIVOS DO PERIODO DO CANAL A
+;
+; R1 => 7   6   5   4   3   2   1   0
+;       x   x   x   x   BITS MAIS SIGNIFICATIVOS DO PERIODO DO CANAL A
+;
+; PODEMOS CARREGAR O PERIODO COM VALORES QUE VAO DE 1 ATÉ 4095 
 ; ================================================================================================
-; REGISTRADORES
+
 ; ================================================================================================
-; 00	Tone Pitch L - Channel A		LLLLLLLL Lower value = Higher pitch
-; 01	Tone Pitch H - Channel A		----HHHH Lower value = Higher pitch
-; 02	Tone Pitch L - Channel B		LLLLLLLL Lower value = Higher pitch
-; 03	Tone Pitch H - Channel B		----HHHH Lower value = Higher pitch
-; 04	Tone Pitch L - Channel C		LLLLLLLL Lower value = Higher pitch
-; 05	Tone Pitch H - Channel C		----HHHH Lower value = Higher pitch
-; 06	Noise Generator	          		---NNNNN Higher = Faster noise
-; 07	Mixer 	       					--NNNTTT N=Noise T=Tone (Channel CBACBA 1=mute 0=normal)
-; 08	Amplitude - Channel A			---EVVVV E=Envelope (1=Enabled) VVVV=Volume
-; 09	Amplitude - Channel B			---EVVVV E=Envelope (1=Enabled) VVVV=Volume
-; 10	Amplitude - Channel C			---EVVVV E=Envelope (1=Enabled) VVVV=Volume
-; 11	Envelope L (Volume over time) 	LLLLLLLL Lower=Faster Envelope
-; 12	Envelope H (Volume over time) 	HHHHHHHH Lower=Faster Envelope
-; 13	Envelope Selection				----EEEH E=Envelope number E (See PDF) H=Hold
+; Apos carregarmos o periodo desejado nos registradores do canal,devemos informar ao nosso 
+; envelope (R8, R9, R10) como queremos modular esse som (modo fixo ou modulado) e qual será o 
+; volume (ou variacao do volume em caso de amplitude modulada) seguindo o sequinte modelo.
+;
+; R8 => 7   6   5   4       3   2   1   0
+;       X   X   X   MODO    APLITUDE DO CANAL A
+;
+; R9 => 7   6   5   4       3   2   1   0
+;       X   X   X   MODO    APLITUDE DO CANAL B
+;
+; R10 => 7   6   5   4       3   2   1   0
+;        X   X   X   MODO    APLITUDE DO CANAL C
+;
+; MODO      => PODE SER 0=FIXO OU 1=MODULADO
+; AMPLITUDE => PODE VARIAR DE 0 A 15  
+; ================================================================================================
+
+; ================================================================================================
+; Para tocar o som efetivamente, informamos nosso MIXER (R7) que queremos ativar os canais de som 
+; configurados acima. segue modelo do registrador 7 
+;
+; R7 => 7       6       5       4       3       2   1   0
+;       DIRECAO DIRECAO RUIDO   RUIDO   RUIDO   SOM SOM SOM
+;       PORTA B PORTA A C       B       A       C   B   A
+;
+; IMPORTANTE! => CARREGUE SEMPRE OS BITS 7 E 6 COM 1 E 0 OU VOCE PODE DANIFICAR O PSG DO SEU MSX!
+; IMPORTANTE! => NESSE REGISTRADOR VC LIGA OS CANAIS COM 0 E DESLIGA COM 1. 
 ; ================================================================================================
 
 ; ================================================================================================
@@ -50,19 +79,24 @@ ret
 ; ================================================================================================
 PlayNote:
 	cp 0
-	jp z,Mudo
-	ld e,a
-	ld a,0
+	jp z,Mudo					; se a frequencia eh zero, desligamos os canais
+	ld e,a						; pegamos o periodo 
+	ld a,0						; setamos no byte menos significativo
+	call SetRegister			; setamos o periodo do canal A
+	ld e,%00000000				; zeramos os bytes mais significativos do periodo
+	ld a,1						; setamos o byte mais significativo
+	call SetRegister			; setamos o periodo do canal A
+	ld e,%00001111				; setamos modo fixo e volume 15 
+	ld a,8						; setamos a amplitude
 	call SetRegister
-	ld e,%00000000
-	ld a,1
-	call SetRegister
-	ld e,%00111110
+	ld e,%10111110				; liga o canal A
+	ld a,7						; Mixer
+	call SetRegister			; setamos o mixer
 ret
 
 Mudo:
 	ld e,%10111111				; desliga todos os canais 
-	ld a,7		               	; Mixer  --NNNTTT (1=off) 
-	call SetRegister
+	ld a,7		               	; mixer 
+	call SetRegister			; setamos o mixer
 ret
 ; ================================================================================================

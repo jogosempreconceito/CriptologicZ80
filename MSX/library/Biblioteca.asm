@@ -50,6 +50,8 @@ LimpaMem:
 	ld (NumPosSort),a
 	ld (NumContTeste),a
 	ld (NumContErros),a
+	ld (vdpCycle1),a
+	ld (vdpCycle5),a	
 	; ================== Zerar Caracteres ====================
 	ld a,' '
 	ld (ChaLetraAtual),a
@@ -348,14 +350,46 @@ ret
 ; =============================================================================
 SomEmbaralhar:
 	push af 
-		ld a,%01100001				; C
-		call PlaySound
-		ld a,%01100001				; D
-		call PlaySound
-		ld a,%01100001				; E
-		call PlaySound
+		ld a,%10000010				; C
+		call PlayNote
+		call Pause
+		ld a,%10010010				; D
+		call PlayNote
+		call Pause
+		ld a,%10100100				; E
+		call PlayNote
+		call Pause
+		ld a,%10101110				; F
+		call PlayNote
+		call Pause
+		ld a,%11000100				; G
+		call PlayNote
+		call Pause
 		ld a,%00000000				; para de tocar
-		call PlaySound
+		call PlayNote
 	pop af 
 ret 
+; =============================================================================
+
+; =============================================================================
+; Pause
+; =============================================================================
+; Pausa o sistema por 1 segundo  
+; =============================================================================
+; Altera => Nada
+; =============================================================================
+Pause:
+	push af
+		xor a 
+		ld (JIFFY),a				; zero o incremento do VDP
+		ld a,(vdpCycle5)			; carrego 1/10s
+		ld b,a						; carrego 1/10s em b
+ContinuePause:
+  		ld a,(JIFFY)				; pega o contador de ciclos
+  		cp b						; compara com o padrao
+  		jr z,EndPause            	; sai da rotina
+		jr ContinuePause
+EndPause:
+	pop af
+ret
 ; =============================================================================

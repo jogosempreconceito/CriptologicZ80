@@ -49,6 +49,7 @@
 ;
 ; IMPORTANTE! => CARREGUE SEMPRE OS BITS 7 E 6 COM 1 E 0 OU VOCE PODE DANIFICAR O PSG DO SEU MSX!
 ; IMPORTANTE! => NESSE REGISTRADOR VC LIGA OS CANAIS COM 0 E DESLIGA COM 1. 
+; ================================================================================================
 
 ; ================================================================================================
 ; Como esses registradores estao no chip de audio AY3-8910 o Z80 se comunica com ele usando 
