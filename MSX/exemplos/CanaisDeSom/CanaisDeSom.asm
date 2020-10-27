@@ -97,28 +97,52 @@ ret
 ; ================================================================================================
 ; Play Note
 ; ================================================================================================
-; A => Nota a ser tocada
+; B => Nota a ser tocada
 ; ================================================================================================
 ; Altera => Nada
 ; ================================================================================================
 PlayNote:
-  push af
-  push bc
+    ; ===================
+    ; PERIODO LSB
+    ; ===================
     ld a, 0                     ; CARREGA BITS MENOS SIGNIFICATIVOS DA FREQUENCIA
     ld e, b                     ; CARREGA VALOR
     call SetRegister            ; CARREGA REGISTRADOR R0
+    ; ===================
+    ; PERIODO MSB 
+    ; ===================
     ld a, 1                     ; CARREGA BITS MAIS SIGNIFICATIVOS DA FREQUENCIA 
     ld e,%00000000              ; CARREGA FREQUENCIA 
     call SetRegister            ; CARREGA REGISTRADOR R1
-    ld a,15                     ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
-    ld e,3                      ; CARREGA VALOR 
+    ; ===================
+    ; AMPLITUDE
+    ; ===================
+    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE MEDIA
+    ld e,%00001111              ; CARREGA VALOR 
     call SetRegister            ; CARREGA REGISTRADOR R8
+    ; ===================
+    ; MIXER
+    ; ===================    
     ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
     ld e, %10111110             ; CARREGA VALOR
     call SetRegister            ; CARREGA REGISTRADOR R7
-  pop bc
-  pop af 
-ret
+    ; ===================
+    ; TOCA A NOTA POR 1S
+    ; ===================    
+    ld de,65535                 ; carrego um valor de 16 bits 
+    loopNote:         
+      nop                       ; nao faco nada
+      dec de                    ; decremento o loop 
+      ld a,d                    ; ajusto os bits para a comparacao 
+      or e                      ; ajusto os bits para a comparacao 
+      jp nz,loopNote            ; se nao for zero, volto ao loop 
+    ; ===================
+    ; SILENCIO
+    ; ===================    
+    ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
+    ld e, %10111111             ; CARREGA VALOR
+    call SetRegister            ; CARREGA REGISTRADOR R7    
+  ret
 ; ===============================================================================================
 
 ; ================================================================================================
