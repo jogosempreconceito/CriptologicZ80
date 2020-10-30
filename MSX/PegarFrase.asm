@@ -32,12 +32,5 @@ ValidaDuasLetras:
 	cp 2 
 	ret nc 					; Se a >= 2 esta ok, retorna 
 	call LimpaString
-jp PegarFrase	
-
-ImprimirFrase:
-	call NovaLinha 
-	ld hl,MsgUsuario2
-	call PrintString 
-	ld hl,StrFrase 
-	call PrintString 	
+	jp PegarFrase	
 ret

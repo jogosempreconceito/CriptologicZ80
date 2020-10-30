@@ -26,7 +26,60 @@
 ;
 ; PODEMOS CARREGAR O PERIODO COM VALORES QUE VAO DE 1 ATÉ 4095 
 ; ================================================================================================
-
+; Tabela de conversao de notas em frequencias
+; ================================================================================================
+A0  EQU 27
+B0  EQU 31
+C1  EQU 33 
+D1  EQU 37
+E1  EQU 41
+F1  EQU 43
+G1  EQU 49
+A1  EQU 55
+B1  EQU 62
+C2  EQU 65
+D2  EQU 73
+E2  EQU 82
+F2  EQU 87
+G2  EQU 98
+A2  EQU 110
+B2  EQU 123
+C3  EQU 130
+D3  EQU 146
+E3  EQU 164
+F3  EQU 174
+G3  EQU 196
+A3  EQU 220
+B3  EQU 246
+C4  EQU 261
+D4  EQU 293
+E4  EQU 329 
+F4  EQU 349
+G4  EQU 392
+A4  EQU 440
+B4  EQU 493
+C5  EQU 523
+D5  EQU 587
+E5  EQU 659
+F5  EQU 698
+G5  EQU 783
+A5  EQU 880
+B5  EQU 987
+C6  EQU 1046
+D6  EQU 1174
+E6  EQU 1318
+F6  EQU 1396
+G6  EQU 1568
+A6  EQU 1760
+B6  EQU 1975
+C7  EQU 2093
+D7  EQU 2349
+E7  EQU 2693
+F7  EQU 2793
+G7  EQU 3136
+A7  EQU 3520
+B7  EQU 3951
+C8  EQU 4186
 ; ================================================================================================
 ; Apos carregarmos o periodo desejado nos registradores do canal,devemos informar ao nosso 
 ; envelope (R8, R9, R10) como queremos modular esse som (modo fixo ou modulado) e qual será o 
@@ -71,32 +124,53 @@ ret
 ; ===============================================================================================
 
 ; ================================================================================================
-; PlayNote
+; Play Note
 ; ================================================================================================
-; A => Frequencia do som 
+; B => Nota a ser tocada (LSB)
+; C => Nota a ser tocada (MSB)
 ; ================================================================================================
 ; Altera => Nada
 ; ================================================================================================
 PlayNote:
-	cp 0
-	jp z,Mudo					; se a frequencia eh zero, desligamos os canais
-	ld e,a						; pegamos o periodo 
-	ld a,0						; setamos no byte menos significativo
-	call SetRegister			; setamos o periodo do canal A
-	ld e,%00000000				; zeramos os bytes mais significativos do periodo
-	ld a,1						; setamos o byte mais significativo
-	call SetRegister			; setamos o periodo do canal A
-	ld e,%00001111				; setamos modo fixo e volume 15 
-	ld a,8						; setamos a amplitude
-	call SetRegister
-	ld e,%10111110				; liga o canal A
-	ld a,7						; Mixer
-	call SetRegister			; setamos o mixer
-ret
-
-Mudo:
-	ld e,%10111111				; desliga todos os canais 
-	ld a,7		               	; mixer 
-	call SetRegister			; setamos o mixer
-ret
-; ================================================================================================
+    ; ========================
+    ; FREQUENCIA LSB
+    ; ========================
+    ld a,0                      ; CARREGA BITS MENOS SIGNIFICATIVOS DA FREQUENCIA
+    ld e,b                      ; CARREGA VALOR
+    call SetRegister            ; CARREGA REGISTRADOR R0
+    ; ========================
+    ; FREQUENCIA MSB 
+    ; ========================
+    ld a,1                      ; CARREGA BITS MAIS SIGNIFICATIVOS DA FREQUENCIA 
+    ld e,c                      ; CARREGA FREQUENCIA 
+    call SetRegister            ; CARREGA REGISTRADOR R1
+    ; ========================
+    ; AMPLITUDE
+    ; ========================
+    ld a,8                      ; CARREGA O ENVELOPE COM MODO FIXO E AMPLITUDE ALTA
+    ld e,%00001111              ; CARREGA VALOR 
+    call SetRegister            ; CARREGA REGISTRADOR R8
+    ; ========================
+    ; MIXER
+    ; ========================    
+    ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
+    ld e, %10111110             ; CARREGA VALOR
+    call SetRegister            ; CARREGA REGISTRADOR R7
+    ; ========================
+    ; TOCA A NOTA PELO PERIODO
+    ; ========================    
+    ld de,12000                 ; carrego um valor de 16 bits 
+    loopNote:         
+      nop                       ; nao faco nada
+      dec de                    ; decremento o loop 
+      ld a,d                    ; ajusto os bits para a comparacao 
+      or e                      ; ajusto os bits para a comparacao 
+      jp nz,loopNote            ; se nao for zero, volto ao loop 
+    ; ========================
+    ; SILENCIO
+    ; ========================    
+    ld a,7                      ; CARREGA MIXER LIGANDO CANAL A
+    ld e, %10111111             ; CARREGA VALOR
+    call SetRegister            ; CARREGA REGISTRADOR R7    
+  ret
+; ===============================================================================================

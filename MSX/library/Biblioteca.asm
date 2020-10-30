@@ -1,6 +1,6 @@
-; =========================================================================================
+; =============================================================================
 ; FUNCOES GERAIS
-; =========================================================================================
+; =============================================================================
 
 ; =============================================================================
 ; Limpar a tela
@@ -50,8 +50,6 @@ LimpaMem:
 	ld (NumPosSort),a
 	ld (NumContTeste),a
 	ld (NumContErros),a
-	ld (vdpCycle1),a
-	ld (vdpCycle5),a	
 	; ================== Zerar Caracteres ====================
 	ld a,' '
 	ld (ChaLetraAtual),a
@@ -61,9 +59,11 @@ LimpaMem:
 	ld a,16
 	call CleanString
 	ld hl,StrFraseEmb
+	ld a,16
 	call CleanString
 	; ================== Zerar Matrizes ====================
 	ld hl,MatSorteados
+	ld a,16
 	call CleanMat 
 ret 
 
@@ -299,25 +299,24 @@ ImprimeUnidades:
 	add a,&30		
 	call CHPUT
 ret
-; ========================================================================================
+; =============================================================================
 
 ; =============================================================================
 ; Limpar um espaco de memoria com CHR(13)
 ; =============================================================================
 ; HL => Inicio da memoria
-; A	 => bytes a limpar
+; A  => bytes a limpar
 ; =============================================================================
-; Altera => A, Todos os bytes a partir de HL ate HL+D
+; Altera => A, Todos os bytes a partir de HL ate HL+A
 ; =============================================================================
 CleanString:
-	ld a,d
-CleanByteAgain:
 	ld (hl),13
 	cp 0
-	jr z,CleanedBytes
+	jr z,CleanedString
+	inc hl
 	dec a
-	jp CleanByteAgain
-CleanedBytes:
+	jp CleanString
+CleanedString:
 ret
 ; =============================================================================
 
@@ -330,66 +329,39 @@ ret
 ; Altera => A, Todos os bytes a partir de HL ate HL+A
 ; =============================================================================
 CleanMat:
-	ld a,d
-CleanMatAgain:
 	ld (hl),255
 	cp 0
 	jr z,CleanedMat
+	inc hl
 	dec a
-	jp CleanMatAgain
+	jp CleanMat
 CleanedMat:
 ret
 ; =============================================================================
 
 ; =============================================================================
-; Som de embaralhamento
+; Toca o som de embaralhamento
 ; =============================================================================
 ; Parametros => Nenhum
 ; =============================================================================
-; Altera => Nada
+; Altera => nada
 ; =============================================================================
 SomEmbaralhar:
-	push af 
-		ld a,%10000010				; C
-		call PlayNote
-		call Pause
-		ld a,%10010010				; D
-		call PlayNote
-		call Pause
-		ld a,%10100100				; E
-		call PlayNote
-		call Pause
-		ld a,%10101110				; F
-		call PlayNote
-		call Pause
-		ld a,%11000100				; G
-		call PlayNote
-		call Pause
-		ld a,%00000000				; para de tocar
-		call PlayNote
-	pop af 
+	push bc
+  		ld bc,C1
+  		call PlayNote
+  		ld bc,D2
+  		call PlayNote
+  		ld bc,E3
+  		call PlayNote
+  		ld bc,F4
+  		call PlayNote
+  		ld bc,G5
+  		call PlayNote 
+  		ld bc,A6
+  		call PlayNote 
+  		ld bc,B7
+  		call PlayNote
+	pop bc 
 ret 
-; =============================================================================
-
-; =============================================================================
-; Pause
-; =============================================================================
-; Pausa o sistema por 1 segundo  
-; =============================================================================
-; Altera => Nada
-; =============================================================================
-Pause:
-	push af
-		xor a 
-		ld (JIFFY),a				; zero o incremento do VDP
-		ld a,(vdpCycle5)			; carrego 1/10s
-		ld b,a						; carrego 1/10s em b
-ContinuePause:
-  		ld a,(JIFFY)				; pega o contador de ciclos
-  		cp b						; compara com o padrao
-  		jr z,EndPause            	; sai da rotina
-		jr ContinuePause
-EndPause:
-	pop af
-ret
-; =============================================================================
+; ==============================================================================
