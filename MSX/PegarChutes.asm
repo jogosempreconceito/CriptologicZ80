@@ -16,6 +16,7 @@ EstaCorreto:
 	ld hl,MsgUsuario5
 	call PrintString
 	call NovaLinha
+	call SomAcerto
 	ld a,(NumTamFrase)
 	dec a
 	ld b,a	
@@ -58,6 +59,7 @@ AchouTeste:
 	ld hl,MsgUsuario6
 	call PrintString
 	call NovaLinha
+	call SomErro
 	jp loopPegarChar
 
 ImprimeErros:
