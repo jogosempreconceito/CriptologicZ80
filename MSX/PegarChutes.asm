@@ -24,6 +24,7 @@ EstaCorreto:
 	jp z,Acertou
 	inc a
 	ld (NumContTeste),a 
+	call SomAcerto
 	jp loopPegarChar
 Acertou:
 	call ImprimeErros
@@ -57,7 +58,8 @@ AchouTeste:
 	ld (NumContErros),a 
 	ld hl,MsgUsuario6
 	call PrintString
-	call NovaLinha
+	call NovaLinha	
+	call SomErro
 	jp loopPegarChar
 
 ImprimeErros:
